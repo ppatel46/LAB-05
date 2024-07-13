@@ -1,35 +1,28 @@
-'''
-Library for interacting with the PokeAPI.
-https://pokeapi.co/
-'''
 import requests
 
-POKE_API_URL = 'https://pokeapi.co/api/v2/pokemon/'
-
-def main():
-    # Test out the get_pokemon_info() function
-    # Use breakpoints to view returned dictionary
-    poke_info = get_pokemon_info("Rockruff")
-    return
-
-def get_pokemon_info(pokemon_name):
-    """Gets information about a specified Pokemon from the PokeAPI.
-
-    Args:
-        pokemon_name (str): Pokemon name (or Pokedex number)
-
-    Returns:
-        dict: Dictionary of Pokemon information, if successful. Otherwise None.
+def get_pokemon_info(name_or_id):
     """
-    # TODO: Clean the Pokemon name parameter
+    Fetch information for a specified Pokémon from the PokéAPI.
+    
+    Parameters:
+        name_or_id (str/int): Name or PokéDex number of the Pokémon
+    
+    Returns:
+        dict: Pokémon information if fetched successfully, None otherwise
+    """
+    pokeapi_url = f"https://pokeapi.co/api/v2/pokemon/{name_or_id}"
+    response = requests.get(pokeapi_url)
+    
+    if response.status_code == 200:
+        return response.json()
+    else:
+        print(f"Error: {response.status_code} - {response.text}")
+        return None
 
-    # TODO: Build a clean URL and use it to send a GET request
-
-    # TODO: If the GET request was successful, convert the JSON-formatted message body text to a dictionary and return it
-
-    # TODO: If the GET request failed, print the error reason and return None
-
-    return
-
+# Test function (you can remove or comment this part for final submission)
 if __name__ == '__main__':
-    main()
+    pokemon = get_pokemon_info("pikachu")
+    if pokemon:
+        print(pokemon)
+    else:
+        print("Failed to fetch Pokémon info.")
